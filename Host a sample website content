@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Installing nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+        
+    - name: unzip
+      ansible.builtin.unarchive:
+        src: /root/Downloads/beginner-html-site-styled-gh-pages.zip
+        dest: /var/www
+
+    - name: copy to /var/www/html
+      ansible.builtin.copy:
+        remote_src: yes
+        src: /var/www/beginner-html-site-styled-gh-pages/
+        dest: /var/www/html/
+
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted 
